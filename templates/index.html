@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Solar Cell Defect Classifier</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h1>Solar Cell Defect Classifier</h1>
+    <p class="muted">Model: <code>{{ model_path }}</code></p>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash">
+          {% for category, message in messages %}
+            <div class="flash-item {{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <form action="{{ url_for('classify') }}" method="post" enctype="multipart/form-data" class="upload-form">
+      <input type="file" name="image" accept="image/*" required>
+      <button type="submit">Classify</button>
+    </form>
+
+    {% if filename %}
+      <div class="result">
+        <h2>Prediction</h2>
+        <div class="preview">
+          <img src="{{ url_for('uploaded_file', filename=filename) }}" alt="Uploaded image">
+        </div>
+        <div class="pred">
+          <p><strong>Top Label:</strong> {{ pred_label }}</p>
+          {% if top_items %}
+            <table>
+              <thead><tr><th>Class</th><th>Score</th></tr></thead>
+              <tbody>
+                {% for item in top_items %}
+                  <tr><td>{{ item.label }}</td><td>{{ '%.2f'|format(item.prob * 100) }}%</td></tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          {% endif %}
+          {% if ae_error is defined %}
+            <p class="muted">Reconstruction error: {{ "%.6f"|format(ae_error) }} |
+              Threshold: {{ "%.6f"|format(ae_threshold) }}</p>
+          {% endif %}
+        </div>
+      </div>
+    {% endif %}
+
+    <details class="help">
+      <summary>Setup tips</summary>
+      <ol>
+        <li>For an <strong>autoencoder</strong>, set <code>MODEL_PATH</code> to your <code>models/ae_model.keras</code> and ensure <code>models/ae_threshold.json</code> exists.</li>
+        <li>For a <strong>classifier</strong>, set <code>MODEL_PATH</code> to the classifier file and update <code>CLASS_NAMES</code> if needed.</li>
+        <li>If your model already rescales inputs inside the graph (e.g., <code>layers.Rescaling(1./255)</code>), set <code>RESCALE=1.0</code> in your environment.</li>
+      </ol>
+    </details>
+
+    <div class="plots">
+      {% if has_loss %}<a href="{{ url_for('plot_loss') }}" target="_blank">View training loss plot</a>{% endif %}
+      {% if has_tsne %} &nbsp;•&nbsp; <a href="{{ url_for('plot_tsne') }}" target="_blank">View t-SNE embedding</a>{% endif %}
+    </div>
+  </div>
+</body>
+</html>
