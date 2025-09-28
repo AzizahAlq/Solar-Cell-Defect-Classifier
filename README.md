@@ -164,25 +164,6 @@ Validate the system with domain experts before operational decisions.
 
 Monitor for data drift and re-train when the image distribution changes.
 
-Project Structure (Overview)
-
-models/
-Saved models, threshold file, training loss image, and t-SNE image.
-
-solar_dataset/
-Image folder and optional labels file; a cleaned labels file is generated.
-
-uploads/
-Temporary storage for images uploaded via the web app.
-
-templates/ and static/
-Web interface templates and styles.
-
-web app file
-Starts the Flask server and serves predictions.
-
-training scripts
-One for the classifier and one for the autoencoder with t-SNE.
 
 Acknowledgments
 
