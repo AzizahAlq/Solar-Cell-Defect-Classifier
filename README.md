@@ -1,4 +1,12 @@
 Solar Cell Defect Detection: Project Description
+
+We built a simple end-to-end system to detect defects in solar cell images. It supports two paths: a supervised classifier (labels “good” or “defect”) and an unsupervised autoencoder that flags anomalies by high reconstruction error when labels are missing. All images are converted to grayscale, resized to 224×224, and normalized for consistent results, and we include a robust labels/paths cleaner to handle messy CSVs. After training the autoencoder, we also create a t-SNE plot to visualize how images cluster in feature space, making it easier to see separation between normal and defective samples. A lightweight Flask web app lets us upload an image and get a decision—probabilities for the classifier or error-based “good/defect” for the autoencoder—plus links to the training loss and t-SNE images. This setup is small, fast to run, and easy to extend for real inspection workflows. 
+
+We use images from the ELPV Defective Solar Cells dataset on Kaggle (the “defective-solar-cells/elpv-dataset-master” collection), and we credit the original ELPV authors and Kaggle contributors as the data source.
+
+ELPV stands for ElectroLuminescence PhotoVoltaic — i.e., electroluminescence images of photovoltaic (solar) cells/modules. The ELPV dataset consists of solar-cell crops taken from high-resolution electroluminescence (EL) images of PV modules to study defects 
+
+
 Executive Summary
 
 This project detects defects in solar cell images and provides results through a simple web application. It supports two approaches:
