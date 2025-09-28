@@ -144,26 +144,6 @@ Image quality and lighting variations can affect results.
 
 The simple CNN and AE favor speed and clarity over maximum accuracy.
 
-Future Improvements
-
-Calibrate the autoencoder threshold using a small labeled set to maximize F1 score.
-
-Try UMAP as an alternative to t-SNE for faster, stable embeddings.
-
-Add self-supervised pretraining to improve features with few labels.
-
-Export models to ONNX or Core ML for edge deployment.
-
-Add basic audit tools (e.g., sample browser for false positives/negatives).
-
-Ethical and Practical Notes
-
-Use images responsibly and respect any data licenses.
-
-Validate the system with domain experts before operational decisions.
-
-Monitor for data drift and re-train when the image distribution changes.
-
 
 Acknowledgments
 
